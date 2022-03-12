@@ -1,32 +1,35 @@
 package pages;
 
+import model.Game;
 import net.serenitybdd.core.pages.ListOfWebElementFacades;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import utils.GameUtil;
+import utils.StringUtil;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.List;
 
 public class ActionsGamesPage extends PageObject {
 
     private final String gamesLocator = "//div[contains(@id,'TopSellers')]//a";
     private final String saleLocator = "//div[contains(@class,'discount_pct')]";
-    private final String cheapGameLocator = "//div[contains(@class,'discount_pct') and contains(text(),'%d')]";
     private final String gameOriginPriceLocator = "//div[contains(@class,'original_price')]";
     private final String gameNameLocator = "//div[contains(@class,'item_name')]";
     private final String gameFinalPriceLocator = "//div[contains(@class,'final_price')";
+    private String gameByNameLocator = "//a//*[text()='%s']";
     @FindBy(xpath = "//div[@id='tab_select_TopSellers']")
     private WebElementFacade topSellersBtn;
     @FindBy(xpath = "//span[@id='TopSellers_btn_next']")
     private WebElementFacade nextPageBtn;
-    private ListOfWebElementFacades gamesList;
-    private WebElementFacade gameLn;
+    private ListOfWebElementFacades gameWebList;
 
     public boolean ifSalesExit(){
         for (WebElementFacade element:
-             gamesList) {
+                gameWebList) {
             if (element.findElement(By.xpath(saleLocator)).isDisplayed()){
                 return true;
             }
@@ -35,48 +38,45 @@ public class ActionsGamesPage extends PageObject {
     }
 
     public void fillGameList(){
-        gamesList = findAll(By.xpath(gamesLocator));
+        gameWebList = findAll(By.xpath(gamesLocator));
     }
 
     public void turnMenu(){
         nextPageBtn.click();
     }
 
-    public Integer getMaxSale(){
-        ArrayList<Integer> salesValueList = new ArrayList<>();
+    public List<Game> getGames(){
+        ArrayList<Game> gameList = new ArrayList<>();
         for (WebElementFacade element:
-                gamesList) {
-            salesValueList.add(getIntegerValue(element.findElement(By.xpath(saleLocator)).getText()));
+             gameWebList) {
+            gameList.add(GameUtil.convertToGame(getGameName(element),getGameSale(element),
+                    getGameFinalPrice(element),getGameOrigPrice(element)));
         }
-        return salesValueList.stream().max(Comparator.naturalOrder()).get();
+        return gameList;
     }
 
-    private Integer getIntegerValue(String textValue){
-        return Integer.getInteger(textValue.substring(0,textValue.length()-1));
+    private int getGameSale(WebElement game){
+        List<WebElement> sales = game.findElements(By.xpath(saleLocator));
+        return  sales.isEmpty() ? 0 : StringUtil.getIntValue(sales.get(sales.size()-1).getText());
     }
 
-    public void findCheapestGame(int sale){
-        for (WebElementFacade element:
-                gamesList) {
-            if (element.findElement(By.xpath(String.format(cheapGameLocator, sale))).isDisplayed()){
-                gameLn = element;
-            }
-        }
+    public void openGamePage(Game game){
+        find(By.xpath(String.format(gameByNameLocator, game.getName()))).click();
     }
 
     public void openTopSellers(){
         topSellersBtn.click();
     }
 
-    public String getGameOrigPrice(){
-        return gameLn.findElement(By.xpath(gameOriginPriceLocator)).getText();
+    private String getGameOrigPrice(WebElement game){
+        return game.findElement(By.xpath(gameOriginPriceLocator)).getText();
     }
 
-    public String getGameName(){
-        return gameLn.findElement(By.xpath(gameNameLocator)).getText();
+    private String getGameName(WebElement game){
+        return game.findElement(By.xpath(gameNameLocator)).getText();
     }
 
-    public String getGameFinalPrice(){
-        return gameLn.findElement(By.xpath(gameFinalPriceLocator)).getText();
+    private String getGameFinalPrice(WebElement game){
+        return game.findElement(By.xpath(gameFinalPriceLocator)).getText();
     }
 }
