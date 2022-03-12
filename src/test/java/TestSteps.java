@@ -2,11 +2,11 @@ import model.Game;
 import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.WebDriver;
-import pages.ActionsGamesPage;
-import pages.AgeCheckPage;
-import pages.MainPage;
+import pages.*;
+import utils.DateUtil;
 import utils.GameUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class TestSteps {
@@ -14,6 +14,8 @@ public class TestSteps {
     MainPage mainPage;
     ActionsGamesPage actionsGamesPage;
     AgeCheckPage ageCheckPage;
+    GamePage gamePage;
+    InstallPage installPage;
     @Managed(uniqueSession=true, driver="chrome")
     WebDriver driver;
 
@@ -57,5 +59,49 @@ public class TestSteps {
         return ageCheckPage.isAgeCheckPage(driver.getCurrentUrl());
     }
 
+    @Step("Check if AgeCheckPage contains select block")
+    public boolean isSelectBlockDisplayed(){
+        return ageCheckPage.isAgeSelectDisplayed();
+    }
 
+    @Step("Create valid date to pass the ageCheck")
+    public void inputValidDate(long agePassVal){
+        ageCheckPage.findAgeSelects();
+        LocalDate startDate = LocalDate.of(ageCheckPage.findBoundaryAgeValue(), 1,1);
+        LocalDate validDate = DateUtil.generateValidDate(startDate, agePassVal);
+        ageCheckPage.selectDay(validDate.getDayOfMonth());
+        ageCheckPage.selectMonth(validDate.getMonth().toString());
+        ageCheckPage.selectYear(validDate.getYear());
+    }
+
+    @Step("Try open game page")
+    public void openGamePageFromAgeCheck(){
+        ageCheckPage.openGamePage();
+    }
+
+    @Step("Get cost data about game")
+    public Game getGameData(String gameName){
+        gamePage.findGame(gameName);
+        return GameUtil.convertToGame(gameName, gamePage.getGameSale(), gamePage.getGameFinalPrice(), gamePage.getGameOrigPrice());
+    }
+
+    @Step("Check if games final price equals")
+    public boolean compareGamesByFinalPrice(Game gameFromMenu, Game gameFromPage){
+        return gameFromMenu.getFinalPrice().equals(gameFromPage.getFinalPrice());
+    }
+
+    @Step("Check if games orig price equals")
+    public boolean compareGamesByOrigPrice(Game gameFromMenu, Game gameFromPage){
+        return gameFromMenu.getOriginPrice().equals(gameFromPage.getOriginPrice());
+    }
+
+    @Step("Check if games sales equals")
+    public boolean compareGamesBySale(Game gameFromMenu, Game gameFromPage){
+        return gameFromMenu.getSale()==gameFromPage.getSale();
+    }
+
+    @Step("Download steam installer")
+    public void downloadInstaller(){
+        gamePage.openInstallPage();
+    }
 }
