@@ -8,6 +8,7 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import utils.GameUtil;
+import utils.JSONReader;
 import utils.StringUtil;
 
 import java.util.ArrayList;
@@ -16,10 +17,7 @@ import java.util.List;
 public class ActionsGamesPage extends PageObject {
 
     private final String gamesLocator = "//div[contains(@id,'TopSellers')]//a";
-    private final String saleLocator = "//div[contains(@class,'discount_pct')]";
-    private final String gameOriginPriceLocator = "//div[contains(@class,'original_price')]";
-    private final String gameNameLocator = "//div[contains(@class,'item_name')]";
-    private final String gameFinalPriceLocator = "//div[contains(@class,'final_price')";
+    private String gameParamLocator = "//div[contains(@class,'%s')]";
     private String gameByNameLocator = "//a//*[text()='%s']";
     @FindBy(xpath = "//div[@id='tab_select_TopSellers']")
     private WebElementFacade topSellersBtn;
@@ -30,7 +28,7 @@ public class ActionsGamesPage extends PageObject {
     public boolean ifSalesExit(){
         for (WebElementFacade element:
                 gameWebList) {
-            if (element.findElement(By.xpath(saleLocator)).isDisplayed()){
+            if (element.findElement(By.xpath(String.format(gameParamLocator, JSONReader.getTestDataJSON("saleGameLoc")))).isDisplayed()){
                 return true;
             }
         }
@@ -56,7 +54,8 @@ public class ActionsGamesPage extends PageObject {
     }
 
     private int getGameSale(WebElement game){
-        List<WebElement> sales = game.findElements(By.xpath(saleLocator));
+        List<WebElement> sales = game.findElements(By.xpath(
+                String.format(gameParamLocator, JSONReader.getTestDataJSON("saleGameLoc"))));
         return  sales.isEmpty() ? 0 : StringUtil.getIntValue(sales.get(sales.size()-1).getText());
     }
 
@@ -69,14 +68,17 @@ public class ActionsGamesPage extends PageObject {
     }
 
     private String getGameOrigPrice(WebElement game){
-        return game.findElement(By.xpath(gameOriginPriceLocator)).getText();
+        return game.findElement(By.xpath(
+                String.format(gameParamLocator, JSONReader.getTestDataJSON("origPriceLoc")))).getText();
     }
 
     private String getGameName(WebElement game){
-        return game.findElement(By.xpath(gameNameLocator)).getText();
+        return game.findElement(By.xpath(
+                String.format(gameParamLocator, JSONReader.getTestDataJSON("nameGameLoc")))).getText();
     }
 
     private String getGameFinalPrice(WebElement game){
-        return game.findElement(By.xpath(gameFinalPriceLocator)).getText();
+        return game.findElement(By.xpath(
+                String.format(gameParamLocator, JSONReader.getTestDataJSON("final_price")))).getText();
     }
 }
