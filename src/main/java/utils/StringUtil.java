@@ -1,8 +1,9 @@
 package utils;
 
 public class StringUtil {
-    public static Integer getIntValue(String textValue){
-        return Integer.getInteger(textValue.substring(0,textValue.length()-1));
+
+    public static int getIntValue(String textValue){
+        return Integer.parseInt(textValue.substring(1,textValue.length()-1));
     }
 
     public static String getFileNameFromLink(String link){

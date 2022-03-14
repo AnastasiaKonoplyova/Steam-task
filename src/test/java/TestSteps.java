@@ -1,23 +1,20 @@
 import model.Game;
-import net.thucydides.core.annotations.Managed;
 import net.thucydides.core.annotations.Step;
-import org.openqa.selenium.WebDriver;
 import pages.*;
 import utils.DateUtil;
+import utils.FileUtil;
 import utils.GameUtil;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class TestSteps {
+public class TestSteps{
 
     MainPage mainPage;
     ActionsGamesPage actionsGamesPage;
     AgeCheckPage ageCheckPage;
     GamePage gamePage;
     InstallPage installPage;
-    @Managed(uniqueSession=true, driver="chrome")
-    WebDriver driver;
 
     @Step("Starting test, open main page and then actions games page")
     public void openActionsPage(){
@@ -31,12 +28,12 @@ public class TestSteps {
     }
 
     @Step("Check if games with sales exist on the page. If false -> turn page")
-    public void findSalesInGames(){
+    public void findSalesGames(){
         actionsGamesPage.fillGameList();
-        while (!actionsGamesPage.ifSalesExit()){
-            actionsGamesPage.turnMenu();
-            findSalesInGames();
-        }
+        /*if(actionsGamesPage.ifSalesNotExit()){
+           actionsGamesPage.showMoreGames();
+           return findSalesGames();
+        }*/
     }
 
     @Step("Get games as objects")
@@ -54,10 +51,10 @@ public class TestSteps {
         actionsGamesPage.openGamePage(game);
     }
 
-    @Step("Check is needed page")
+/*    @Step("Check is needed page")
     public boolean isAgeCheckPage(){
         return ageCheckPage.isAgeCheckPage(driver.getCurrentUrl());
-    }
+    }*/
 
     @Step("Check if AgeCheckPage contains select block")
     public boolean isSelectBlockDisplayed(){
@@ -103,5 +100,24 @@ public class TestSteps {
     @Step("Download steam installer")
     public void downloadInstaller(){
         gamePage.openInstallPage();
+        installPage.downloadInstaller();
     }
+
+    @Step("Check if installer download")
+    public boolean isFileDownload(String downloadPath){
+        String fileName = installPage.getFileName();
+        do {
+            if (FileUtil.isFileDownloaded(downloadPath, fileName)) {
+                return true;
+            } else {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        }while (false);
+    }
+
 }
