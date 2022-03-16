@@ -1,7 +1,7 @@
 {
   "ageRange" : "18",
-  "origPriceLoc" : "OriginalPrice",
-  "finalPriceLoc" : "SalePriceBox",
-  "saleGameLoc" : "DiscountBox",
-  "nameGameLoc" : "WidgetTitle"
+  "origPriceLoc" : "original_price",
+  "finalPriceLoc" : "final_price",
+  "saleGameLoc" : "discount_pct",
+  "nameGameLoc" : "item_name"
 }
