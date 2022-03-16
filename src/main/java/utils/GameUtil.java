@@ -1,6 +1,8 @@
 package utils;
 
 import model.Game;
+
+import java.util.Comparator;
 import java.util.List;
 
 public class GameUtil {
@@ -10,7 +12,7 @@ public class GameUtil {
     }
 
     public static Game findGameWithMaxSale(List<Game> gameList){
-        return  gameList.stream().max(new GameComp()).get();
+        return  gameList.stream().max(Comparator.comparingInt((Game g)->g.getSale())).get();
     }
 
 }
