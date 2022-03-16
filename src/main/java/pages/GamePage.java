@@ -1,5 +1,6 @@
 package pages;
 
+import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
@@ -9,9 +10,10 @@ import utils.StringUtil;
 public class GamePage extends PageObject {
 
     private String gameLocator = "//*[text()='Buy %s']";
-    private String gameParamLocator = "//following-sibling::div//div[contains(@class,'%s')]";
+    private String gameParamLocator = ".//following-sibling::div//div[contains(@class,'%s')]";
     private WebElementFacade game;
-    private WebElementFacade installLn = find(By.xpath("//a[contains(@class,'installsteam')]"));
+    @FindBy(xpath = "//a[contains(@class,'installsteam')]")
+    WebElementFacade installLn;
 
     public void findGame(String gameName){
         game = find(By.xpath(String.format(gameLocator, gameName)));
@@ -24,12 +26,12 @@ public class GamePage extends PageObject {
 
     public int getGameSale(){
         return StringUtil.getIntValue(game.findElement(By.xpath(
-                String.format(gameParamLocator, JSONReader.getTestDataJSON("discount_pct")))).getText());
+                String.format(gameParamLocator, JSONReader.getTestDataJSON("saleGameLoc")))).getText());
     }
 
     public String getGameFinalPrice(){
         return game.findElement(By.xpath(
-                String.format(gameParamLocator, JSONReader.getTestDataJSON("final_price")))).getText();
+                String.format(gameParamLocator, JSONReader.getTestDataJSON("finalPriceLoc")))).getText().split(" ")[0];
     }
 
     public void openInstallPage(){
