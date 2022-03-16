@@ -1,17 +1,31 @@
 package utils;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.protocol.BasicHttpContext;
+
 import java.io.File;
+import java.io.IOException;
 
 public class FileUtil {
 
-    public static boolean isFileDownloaded(String downloadPath, String fileName) {
-        File dir = new File(downloadPath);
-        File[] dir_contents = dir.listFiles();
-        for (int i = 0; i < dir_contents.length; i++) {
-            if (dir_contents[i].getName().equals(fileName)) {
-                return true;
-            }
+    public static void saveFile(String downloadPath, String path) {
+        File file = new File(path);
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(downloadPath);
+        CloseableHttpResponse response = null;
+        try{
+            response = httpClient.execute(httpGet, new BasicHttpContext());
+            FileUtils.copyInputStreamToFile(response.getEntity().getContent(), file);
+        }catch (IOException e){
+            e.printStackTrace();
         }
-       return false;
+    }
+
+    public static boolean checkFileExists(String path){
+        return new File(path).exists();
     }
 }
