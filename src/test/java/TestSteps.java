@@ -28,12 +28,13 @@ public class TestSteps{
     }
 
     @Step("Check if games with sales exist on the page. If false -> turn page")
-    public void findSalesGames(){
+    public boolean findSalesGames(){
         actionsGamesPage.fillGameList();
-        /*if(actionsGamesPage.ifSalesNotExit()){
+        if(actionsGamesPage.ifSalesNotExit()){
            actionsGamesPage.showMoreGames();
            return findSalesGames();
-        }*/
+        }
+        return true;
     }
 
     @Step("Get games as objects")
@@ -51,13 +52,13 @@ public class TestSteps{
         actionsGamesPage.openGamePage(game);
     }
 
-/*    @Step("Check is needed page")
-    public boolean isAgeCheckPage(){
-        return ageCheckPage.isAgeCheckPage(driver.getCurrentUrl());
-    }*/
+    @Step("Check is needed page")
+    public boolean isAgeCheckPage(String url){
+        return ageCheckPage.isAgeCheckPage(url);
+    }
 
     @Step("Check if AgeCheckPage contains select block")
-    public boolean isSelectBlockDisplayed(){
+    public boolean isSelectDateBlockDisplayed(){
         return ageCheckPage.isAgeSelectDisplayed();
     }
 
@@ -80,21 +81,6 @@ public class TestSteps{
     public Game getGameData(String gameName){
         gamePage.findGame(gameName);
         return GameUtil.convertToGame(gameName, gamePage.getGameSale(), gamePage.getGameFinalPrice(), gamePage.getGameOrigPrice());
-    }
-
-    @Step("Check if games final price equals")
-    public boolean compareGamesByFinalPrice(Game gameFromMenu, Game gameFromPage){
-        return gameFromMenu.getFinalPrice().equals(gameFromPage.getFinalPrice());
-    }
-
-    @Step("Check if games orig price equals")
-    public boolean compareGamesByOrigPrice(Game gameFromMenu, Game gameFromPage){
-        return gameFromMenu.getOriginPrice().equals(gameFromPage.getOriginPrice());
-    }
-
-    @Step("Check if games sales equals")
-    public boolean compareGamesBySale(Game gameFromMenu, Game gameFromPage){
-        return gameFromMenu.getSale()==gameFromPage.getSale();
     }
 
     @Step("Download steam installer")
