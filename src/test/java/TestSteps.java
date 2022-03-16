@@ -86,24 +86,12 @@ public class TestSteps{
     @Step("Download steam installer")
     public void downloadInstaller(){
         gamePage.openInstallPage();
-        installPage.downloadInstaller();
+        installPage.downloadSteam();
     }
 
     @Step("Check if installer download")
-    public boolean isFileDownload(String downloadPath){
-        String fileName = installPage.getFileName();
-        do {
-            if (FileUtil.isFileDownloaded(downloadPath, fileName)) {
-                return true;
-            } else {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return false;
-            }
-        }while (false);
+    public boolean isFileDownload(){
+        return installPage.checkDownloadFile();
     }
 
 }

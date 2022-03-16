@@ -31,11 +31,10 @@ public class SteamGameTest  extends BaseTest{
             }
             testSteps.openGamePageFromAgeCheck();
         }
-        gameFromPage = testSteps.getGameData(testGame.getName());
+       gameFromPage = testSteps.getGameData(testGame.getName());
         Assert.assertTrue("Games are different", gameFromPage.equals(testGame));
         testSteps.downloadInstaller();
-        String path = System.getProperty("user.home")+"/Downloads/";
-        Assert.assertTrue("Installer wasn't downloaded", testSteps.isFileDownload(path));
+        Assert.assertTrue("Installer wasn't downloaded", testSteps.isFileDownload());
     }
 
 }
