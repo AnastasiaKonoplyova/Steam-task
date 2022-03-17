@@ -17,14 +17,13 @@ public class ActionsGamesPage extends PageObject {
 
     private String gamesLocator = ".//div[contains(@class,'discount_pct')]//ancestor::a";
     private String gameParamLocator = ".//div[contains(@class,'%s')]";
-    private String gameByNameLocator = "(//a//*[text()='%s'])[1]";
+    private String gameByNameLocator = ".//*[text()='%s']//ancestor::a";
     @FindBy(xpath = "//div[@id='tab_select_TopSellers']")
     WebElementFacade topSellersBtn;
     @FindBy(xpath = "//span[@id='NewReleases_btn_next']")
     WebElementFacade nextPageBtn;
     @FindBy(xpath = "//div[@id='tab_content_TopSellers']")
     WebElementFacade gamesContainer;
-    WebElementFacade gameLink;
     ListOfWebElementFacades gameWebList;
 
     public boolean ifSalesNotExit(){
@@ -51,7 +50,7 @@ public class ActionsGamesPage extends PageObject {
     }
 
     public void openGamePage(Game game){
-        find(By.xpath(String.format(gameByNameLocator, game.getName()))).click();
+        gamesContainer.find(By.xpath(String.format(gameByNameLocator, game.getName()))).click();
     }
 
     public void openTopSellers(){

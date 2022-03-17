@@ -4,6 +4,7 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
+import utils.StringUtil;
 
 public class AgeCheckPage extends PageObject {
 
@@ -11,7 +12,7 @@ public class AgeCheckPage extends PageObject {
     private String selectParamLocator = "//select[contains(@id,'%s')]";
     private String selectBlockLocator = "//div[contains(@class,'birthday_selector')]";
     @FindBy(xpath = "//div[@class='agegate_text_container btns']/a[@href='#']")
-    private WebElementFacade viewPageBtn;
+    WebElementFacade viewPageBtn;
     private WebElementFacade ageDaySelect;
     private WebElementFacade ageMonthSelect;
     private WebElementFacade ageYearSelect;
@@ -27,7 +28,7 @@ public class AgeCheckPage extends PageObject {
     }
 
     public int findBoundaryAgeValue(){
-        return Integer.getInteger(ageYearSelect.getSelectOptions().get(0));
+        return Integer.parseInt(ageYearSelect.getSelectOptions().get(0));
     }
 
     public void selectDay(int day){
@@ -35,7 +36,7 @@ public class AgeCheckPage extends PageObject {
     }
 
     public void selectMonth(String month){
-        ageMonthSelect.selectByValue(month);
+        ageMonthSelect.selectByValue(StringUtil.changeMonthCase(month));
     }
 
     public void selectYear(int year){
@@ -47,6 +48,6 @@ public class AgeCheckPage extends PageObject {
     }
 
     public boolean isAgeSelectDisplayed(){
-        return find(By.xpath(selectBlockLocator)).isDisabled();
+        return find(By.xpath(selectBlockLocator)).isPresent();
     }
 }

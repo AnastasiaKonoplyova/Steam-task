@@ -9,7 +9,7 @@ import utils.StringUtil;
 
 public class GamePage extends PageObject {
 
-    private String gameLocator = "//*[text()='Buy %s']";
+    private String gameLocator = "//div[@class='game_area_purchase_game']";
     private String gameParamLocator = ".//following-sibling::div//div[contains(@class,'%s')]";
     private WebElementFacade game;
     @FindBy(xpath = "//a[contains(@class,'installsteam')]")
