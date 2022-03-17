@@ -11,15 +11,14 @@ public class InstallPage extends PageObject {
 
     @FindBy(xpath = "(//a[contains(@class,'install_steam')])[1]")
     WebElementFacade installLn;
-    private String filePath;
 
     public void downloadSteam(){
         String downloadLink = installLn.getAttribute("href");
-        filePath = String.format(JSONReader.getTestDataJSON("pathToInstaller"), StringUtil.getFileNameFromLink(downloadLink));
+        String filePath = String.format(JSONReader.getTestDataJSON("pathToInstaller"), StringUtil.getFileNameFromLink(downloadLink));
         FileUtil.saveFile(downloadLink, filePath);
     }
 
     public boolean checkDownloadFile(){
-        return FileUtil.checkFileExists(filePath);
+        return FileUtil.checkFileExists();
     }
 }
