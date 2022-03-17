@@ -2,7 +2,6 @@ import model.Game;
 import net.thucydides.core.annotations.Step;
 import pages.*;
 import utils.DateUtil;
-import utils.FileUtil;
 import utils.GameUtil;
 
 import java.time.LocalDate;
@@ -19,6 +18,7 @@ public class TestSteps{
     @Step("Starting test, open main page and then actions games page")
     public void openActionsPage(){
         mainPage.open();
+        mainPage.openGenreMenu();
         mainPage.openActionPage();
     }
 
