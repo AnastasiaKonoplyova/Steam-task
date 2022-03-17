@@ -12,7 +12,10 @@ import java.io.IOException;
 
 public class FileUtil {
 
+    private static String filePath;
+
     public static void saveFile(String downloadPath, String path) {
+        filePath = path;
         File file = new File(path);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(downloadPath);
@@ -25,7 +28,7 @@ public class FileUtil {
         }
     }
 
-    public static boolean checkFileExists(String path){
-        return new File(path).exists();
+    public static boolean checkFileExists(){
+        return new File(filePath).exists();
     }
 }
