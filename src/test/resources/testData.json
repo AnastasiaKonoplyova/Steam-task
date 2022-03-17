@@ -4,5 +4,5 @@
   "finalPriceLoc" : "final_price",
   "saleGameLoc" : "discount_pct",
   "nameGameLoc" : "item_name",
-  "pathToInstaller" : "src/resources/downloads/%s"
+  "pathToInstaller" : "src/downloads/%s"
 }
