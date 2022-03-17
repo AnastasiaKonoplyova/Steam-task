@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class JSONReader {
-    private static final String TEST_DATA_PATH = "src/main/resources/testData.json";
+    private static final String TEST_DATA_PATH = "src/test/resources/testData.json";
     private static JsonNode testNode;
 
     public static void loadProperty(){
