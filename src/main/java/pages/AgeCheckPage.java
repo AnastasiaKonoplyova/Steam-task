@@ -1,30 +1,23 @@
 package pages;
 
 import net.serenitybdd.core.annotations.findby.FindBy;
-import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
-import org.openqa.selenium.By;
-import utils.StringUtil;
+import org.apache.commons.lang.StringUtils;
 
-public class AgeCheckPage extends PageObject {
+public class AgeCheckPage extends BasePage {
 
-    private final String urlPart = "agecheck";
-    private String selectParamLocator = "//select[contains(@id,'%s')]";
-    private String selectBlockLocator = "//div[contains(@class,'birthday_selector')]";
+    private final String URL_PART = "agecheck";
     @FindBy(xpath = "//div[@class='agegate_text_container btns']/a[@href='#']")
     WebElementFacade viewPageBtn;
-    private WebElementFacade ageDaySelect;
-    private WebElementFacade ageMonthSelect;
-    private WebElementFacade ageYearSelect;
+    @FindBy(id = "ageDay")
+    WebElementFacade ageDaySelect;
+    @FindBy(id = "ageMonth")
+    WebElementFacade ageMonthSelect;
+    @FindBy(id = "ageYear")
+    WebElementFacade ageYearSelect;
 
-    public boolean isAgeCheckPage(String url){
-        return url.contains(urlPart);
-    }
-
-    public void findAgeSelects(){
-        ageDaySelect = find(By.xpath(String.format(selectParamLocator, "Day")));
-        ageMonthSelect = find(By.xpath(String.format(selectParamLocator, "Month")));
-        ageYearSelect = find(By.xpath(String.format(selectParamLocator, "Year")));
+    public boolean isAgeCheckPage(){
+        return getDriver().getCurrentUrl().contains(URL_PART);
     }
 
     public int findBoundaryAgeValue(){
@@ -36,7 +29,7 @@ public class AgeCheckPage extends PageObject {
     }
 
     public void selectMonth(String month){
-        ageMonthSelect.selectByValue(StringUtil.changeMonthCase(month));
+        ageMonthSelect.selectByValue(StringUtils.capitalize(month.toLowerCase()));
     }
 
     public void selectYear(int year){
@@ -47,7 +40,4 @@ public class AgeCheckPage extends PageObject {
         viewPageBtn.click();
     }
 
-    public boolean isAgeSelectDisplayed(){
-        return find(By.xpath(selectBlockLocator)).isPresent();
-    }
 }
