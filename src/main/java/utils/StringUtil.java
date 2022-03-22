@@ -1,11 +1,17 @@
 package utils;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
     public static int getIntValue(String textValue){
-        return Integer.parseInt(textValue.substring(1,textValue.length()-1));
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(textValue);
+        if(matcher.find()){
+            return Integer.parseInt(matcher.group());
+        }
+        return 0;
     }
 
     public static String getFileNameFromLink(String link){
@@ -13,7 +19,4 @@ public class StringUtil {
         return lnWords[lnWords.length-1];
     }
 
-    public static String changeMonthCase(String month){
-        return StringUtils.capitalize(month.toLowerCase());
-    }
 }
