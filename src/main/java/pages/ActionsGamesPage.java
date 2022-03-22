@@ -2,55 +2,46 @@ package pages;
 
 import model.Game;
 import net.serenitybdd.core.pages.ListOfWebElementFacades;
-import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import org.openqa.selenium.By;
 import utils.GameUtil;
-import utils.JSONReader;
 import utils.StringUtil;
+import utils.TestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsGamesPage extends PageObject {
+public class ActionsGamesPage extends BasePage {
 
-    private String gamesLocator = ".//div[contains(@class,'discount_pct')]//ancestor::a";
-    private String gameParamLocator = ".//div[contains(@class,'%s')]";
-    private String gameByNameLocator = ".//*[text()='%s']//ancestor::a";
-    @FindBy(xpath = "//div[@id='tab_select_TopSellers']")
+    private final String GAMES_LOCATOR = ".//div[contains(@class,'discount_pct')]//ancestor::a";
+    private final String GAMES_PARAM_LOCATOR = ".//div[contains(@class,'%s')]";
+    private final String GAMES_BY_NAME_LOCATOR = ".//*[text()='%s']//ancestor::a";
+    @FindBy(id = "tab_select_TopSellers")
     WebElementFacade topSellersBtn;
-    @FindBy(xpath = "//span[@id='NewReleases_btn_next']")
+    @FindBy(id = "TopSellers_btn_next")
     WebElementFacade nextPageBtn;
-    @FindBy(xpath = "//div[@id='tab_content_TopSellers']")
+    @FindBy(id = "tab_content_TopSellers")
     WebElementFacade gamesContainer;
-    ListOfWebElementFacades gameWebList;
-
-    public boolean ifSalesNotExit(){
-        return gameWebList.isEmpty();
-    }
-
-    public void fillGameList(){
-        gameWebList = gamesContainer.thenFindAll(By.xpath(gamesLocator));
-    }
 
     public void showMoreGames(){
         nextPageBtn.click();
-        nextPageBtn.waitUntilEnabled();
     }
 
     public List<Game> getGames(){
+        ListOfWebElementFacades webList = gamesContainer.thenFindAll(By.xpath(GAMES_LOCATOR));
         ArrayList<Game> gameList = new ArrayList<>();
         for (WebElementFacade element:
-             gameWebList) {
+                webList) {
             gameList.add(GameUtil.convertToGame(getGameName(element), getGameSale(element),
                     getGameFinalPrice(element), getGameOrigPrice(element)));
         }
+        webList.clear();
         return gameList;
     }
 
     public void openGamePage(Game game){
-        gamesContainer.find(By.xpath(String.format(gameByNameLocator, game.getName()))).click();
+        gamesContainer.find(By.xpath(String.format(GAMES_BY_NAME_LOCATOR, game.getName()))).click();
     }
 
     public void openTopSellers(){
@@ -59,21 +50,21 @@ public class ActionsGamesPage extends PageObject {
 
     private int getGameSale(WebElementFacade game){
         return StringUtil.getIntValue(game.findBy(
-                String.format(gameParamLocator, JSONReader.getTestDataJSON("saleGameLoc"))).getText());
+                String.format(GAMES_PARAM_LOCATOR, TestParam.SALE.getTitle())).getText());
     }
 
     private String getGameOrigPrice(WebElementFacade game){
         return game.findBy(By.xpath(
-                String.format(gameParamLocator, JSONReader.getTestDataJSON("origPriceLoc")))).getText();
+                String.format(GAMES_PARAM_LOCATOR, TestParam.ORIG_PRICE.getTitle()))).getText();
     }
 
     private String getGameName(WebElementFacade game){
         return game.findBy(
-                String.format(gameParamLocator, JSONReader.getTestDataJSON("nameGameLoc"))).getText();
+                String.format(GAMES_PARAM_LOCATOR, TestParam.NAME.getTitle())).getText();
     }
 
     private String getGameFinalPrice(WebElementFacade game){
         return game.findBy(By.xpath(
-                String.format(gameParamLocator, JSONReader.getTestDataJSON("finalPriceLoc")))).getText();
+                String.format(GAMES_PARAM_LOCATOR, TestParam.FINAL_PRICE.getTitle()))).getText();
     }
 }
