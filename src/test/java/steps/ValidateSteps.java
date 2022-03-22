@@ -1,10 +1,7 @@
 package steps;
 
-import model.Game;
-import net.serenitybdd.core.Serenity;
 import net.thucydides.core.annotations.Step;
 import pages.AgeCheckPage;
-import pages.WrongRegion;
 import utils.DateUtil;
 import utils.TestParam;
 
