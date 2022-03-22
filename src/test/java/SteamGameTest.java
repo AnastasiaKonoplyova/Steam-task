@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import steps.*;
+import utils.FileUtil;
 
 
 @RunWith(SerenityRunner.class)
@@ -41,6 +42,6 @@ public class SteamGameTest {
 
     @After
     public void endTest(){
-
+        downloadSteamSteps.deleteFile();
     }
 }
