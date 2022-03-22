@@ -1,20 +1,32 @@
 package pages;
 
+import net.serenitybdd.core.pages.ListOfWebElementFacades;
 import net.serenitybdd.core.pages.PageComponent;
+import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
+import utils.TestParam;
 
 
 public class MenuComponent extends PageComponent {
 
-    private String MENU_LOCATOR = "//div[@class='store_nav_bg']//div[@id='%s_tab']";
-    private final String GENRE_LOCATOR = "//div[contains(@data-genre-group,'%s') and contains(@class,'popup_menu_subheader')]//a";
+    private String MENU_LOCATOR = "//div[@class='store_nav_bg']//div[contains(@class,'flyout_tab')]";
+    private final String GENRE_LOCATOR = "//div[@data-genre-group]";
 
     public void openGenrePage(String genre){
-        find(By.xpath(String.format(GENRE_LOCATOR, genre))).waitUntilVisible().click();
+        ListOfWebElementFacades genreList = findAll(By.xpath(GENRE_LOCATOR));
+        genreList.stream()
+                 .filter(webElementFacade -> webElementFacade.isVisible())
+                 .filter(webElementFacade -> webElementFacade.getAttribute("data-genre-group")
+                         .equals(TestParam.GAME_GENRE.getTitle()))
+                 .findFirst().get().find(By.xpath(".//a")).click();
     }
 
     public void openMenu(String subMenu){
-       withAction().moveToElement(find(By.xpath(String.format(MENU_LOCATOR, subMenu)))).build().perform();
+        ListOfWebElementFacades menuList = findAll(By.xpath(MENU_LOCATOR));
+        WebElementFacade subMenuEl =  menuList.stream()
+                .filter(webElementFacade -> webElementFacade.getAttribute("id").contains(TestParam.SUBMENU.getTitle()))
+                .findFirst().get();
+        withAction().moveToElement(subMenuEl).build().perform();
     }
 
 }
