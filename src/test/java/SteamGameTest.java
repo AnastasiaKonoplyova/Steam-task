@@ -1,40 +1,46 @@
-import model.Game;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Steps;
-import org.junit.Assert;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import utils.JSONReader;
+import steps.*;
 
-import java.util.List;
 
 @RunWith(SerenityRunner.class)
-public class SteamGameTest  extends BaseTest{
+public class SteamGameTest {
 
     @Steps
-    TestSteps testSteps;
-    List<Game> games;
-    Game testGame, gameFromPage;
+    MainPageSteps mainPageSteps;
+    @Steps
+    ActionsPageSteps actionsPageSteps;
+    @Steps
+    ValidateSteps validateSteps;
+    @Steps
+    GamePageSteps gamePageSteps;
+    @Steps
+    DownloadSteamSteps downloadSteamSteps;
 
+    @Before
+    public void startTest(){
+        mainPageSteps.openActionsPage();
+    }
 
     @Test
     public void checkGameData(){
-        testSteps.openActionsPage();
-        testSteps.openTopSellers();
-        testSteps.findSalesGames();
-        games = testSteps.getObjectGames();
-        testGame = testSteps.findGameBySale(games);
-        testSteps.openGamePageBySale(testGame);
-        if (testSteps.isAgeCheckPage(driver.getCurrentUrl())){
-            if(testSteps.isSelectDateBlockDisplayed()){
-                testSteps.inputValidDate(Long.parseLong(JSONReader.getTestDataJSON("ageRange")));
-            }
-            testSteps.openGamePageFromAgeCheck();
-        }
-       gameFromPage = testSteps.getGameData(testGame.getName());
-        Assert.assertTrue("Games are different", gameFromPage.equals(testGame));
-        testSteps.downloadInstaller();
-        Assert.assertTrue("Installer wasn't downloaded", testSteps.isFileDownload());
+        actionsPageSteps.openTopSellers();
+        actionsPageSteps.fillGames();
+        actionsPageSteps.findGameBySale();
+        actionsPageSteps.openGamePage();
+        validateSteps.isAgeCheckPage();
+        gamePageSteps.getGameDataFromPage();
+        gamePageSteps.compareGames();
+        downloadSteamSteps.downloadInstaller();
+        downloadSteamSteps.isFileDownload();
     }
 
+    @After
+    public void endTest(){
+
+    }
 }
