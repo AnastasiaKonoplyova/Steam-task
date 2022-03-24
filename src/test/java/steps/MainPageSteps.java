@@ -2,7 +2,8 @@ package steps;
 
 import net.thucydides.core.annotations.Step;
 import pages.MainPage;
-import utils.TestParam;
+import parameters.GenreMenuParam;
+import parameters.MainMenuParam;
 
 public class MainPageSteps {
 
@@ -11,6 +12,6 @@ public class MainPageSteps {
     @Step("Starting test, open main page and then actions games page")
     public void openActionsPage(){
         mainPage.open();
-        mainPage.openGenrePage(TestParam.SUBMENU.getTitle(),TestParam.GAME_GENRE.getTitle());
+        mainPage.openGenrePage(MainMenuParam.GENRE_MENU, GenreMenuParam.GAME_ACTION_GENRE);
     }
 }

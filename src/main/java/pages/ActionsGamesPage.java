@@ -5,9 +5,9 @@ import net.serenitybdd.core.pages.ListOfWebElementFacades;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import org.openqa.selenium.By;
+import parameters.GameParameters;
 import utils.GameUtil;
 import utils.StringUtil;
-import utils.TestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +28,14 @@ public class ActionsGamesPage extends BasePage {
         nextPageBtn.click();
     }
 
-    public List<Game> getGames(){
+    public List<Game> getGamesWithSale(){
         ListOfWebElementFacades webList = gamesContainer.thenFindAll(By.xpath(GAMES_LOCATOR));
         ArrayList<Game> gameList = new ArrayList<>();
         for (WebElementFacade element:
                 webList) {
-            gameList.add(GameUtil.convertToGame(getGameName(element), getGameSale(element),
-                    getGameFinalPrice(element), getGameOrigPrice(element)));
+            gameList.add(GameUtil.convertToGame(getGameValue(element, GameParameters.NAME),
+                    getGameValue(element, GameParameters.SALE), getGameValue(element, GameParameters.FINAL_PRICE),
+                    getGameValue(element,GameParameters.ORIG_PRICE)));
         }
         webList.clear();
         return gameList;
@@ -48,23 +49,12 @@ public class ActionsGamesPage extends BasePage {
         topSellersBtn.waitUntilEnabled().click();
     }
 
-    private int getGameSale(WebElementFacade game){
-        return StringUtil.getIntValue(game.findBy(
-                String.format(GAMES_PARAM_LOCATOR, TestParam.SALE.getTitle())).getText());
-    }
-
-    private String getGameOrigPrice(WebElementFacade game){
-        return game.findBy(By.xpath(
-                String.format(GAMES_PARAM_LOCATOR, TestParam.ORIG_PRICE.getTitle()))).getText();
-    }
-
-    private String getGameName(WebElementFacade game){
-        return game.findBy(
-                String.format(GAMES_PARAM_LOCATOR, TestParam.NAME.getTitle())).getText();
-    }
-
-    private String getGameFinalPrice(WebElementFacade game){
-        return game.findBy(By.xpath(
-                String.format(GAMES_PARAM_LOCATOR, TestParam.FINAL_PRICE.getTitle()))).getText();
+    private String getGameValue(WebElementFacade game, GameParameters param){
+        if(param.equals(GameParameters.NAME)) {
+            return game.findBy(By.xpath(
+                    String.format(GAMES_PARAM_LOCATOR, param.getTitle()))).getText();
+        }
+        return StringUtil.getNumberValue(game.findBy(By.xpath(
+                String.format(GAMES_PARAM_LOCATOR, param.getTitle()))).getText());
     }
 }

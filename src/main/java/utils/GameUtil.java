@@ -4,15 +4,18 @@ import model.Game;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class GameUtil {
 
-    public static Game convertToGame(String name, int sale, String finalPrice, String origPrice){
-        return new Game(name, sale, finalPrice, origPrice);
+    private GameUtil(){}
+    public static Game convertToGame(String name, String sale, String finalPrice, String origPrice){
+        return new Game(name, Integer.parseInt(sale), finalPrice, origPrice);
     }
 
     public static Game findGameWithMaxSale(List<Game> gameList){
-        return  gameList.stream().max(Comparator.comparingInt((Game g)->g.getSale())).get();
+        Optional<Game> maxSaleGame = gameList.stream().max(Comparator.comparingInt(Game::getSale));
+        return maxSaleGame.orElse(null);
     }
 
 }

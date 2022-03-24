@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import steps.*;
-import utils.FileUtil;
 
 
 @RunWith(SerenityRunner.class)
@@ -30,11 +29,9 @@ public class SteamGameTest {
     @Test
     public void checkGameData(){
         actionsPageSteps.openTopSellers();
-        actionsPageSteps.fillGames();
-        actionsPageSteps.findGameBySale();
+        actionsPageSteps.fillGamesWithSale();
         actionsPageSteps.openGamePage();
         validateSteps.isAgeCheckPage();
-        gamePageSteps.getGameDataFromPage();
         gamePageSteps.compareGames();
         downloadSteamSteps.downloadInstaller();
         downloadSteamSteps.isFileDownload();

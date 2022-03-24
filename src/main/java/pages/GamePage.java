@@ -3,7 +3,7 @@ package pages;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 import org.openqa.selenium.By;
-import utils.TestParam;
+import parameters.GameParameters;
 import utils.StringUtil;
 
 public class GamePage extends BasePage {
@@ -13,20 +13,9 @@ public class GamePage extends BasePage {
     WebElementFacade game;
 
 
-    public String getGameOrigPrice(){
-        return game.findElement(By.xpath(
-                String.format(GAME_PARAM_LOCATOR, TestParam.ORIG_PRICE.getTitle()))).getText();
+    public String getGameValue(GameParameters param){
+        return StringUtil.getNumberValue(game.findBy(By.xpath(
+                String.format(GAME_PARAM_LOCATOR, param.getTitle()))).getText());
     }
-
-    public int getGameSale(){
-        return StringUtil.getIntValue(game.findElement(By.xpath(
-                String.format(GAME_PARAM_LOCATOR, TestParam.SALE.getTitle()))).getText());
-    }
-
-    public String getGameFinalPrice(){
-        return game.findElement(By.xpath(
-                String.format(GAME_PARAM_LOCATOR, TestParam.FINAL_PRICE.getTitle()))).getText().split(" ")[0];
-    }
-
 
 }
