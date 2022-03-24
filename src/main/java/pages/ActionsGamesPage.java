@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ActionsGamesPage extends BasePage {
 
-    private final String GAMES_LOCATOR = ".//div[contains(@class,'discount_pct')]//ancestor::a";
+    private final String GAMES_WITH_SALE_LOCATOR = ".//div[contains(@class,'discount_pct')]//ancestor::a";
     private final String GAMES_PARAM_LOCATOR = ".//div[contains(@class,'%s')]";
     private final String GAMES_BY_NAME_LOCATOR = ".//*[text()='%s']//ancestor::a";
     @FindBy(id = "tab_select_TopSellers")
@@ -29,7 +29,7 @@ public class ActionsGamesPage extends BasePage {
     }
 
     public List<Game> getGamesWithSale(){
-        ListOfWebElementFacades webList = gamesContainer.thenFindAll(By.xpath(GAMES_LOCATOR));
+        ListOfWebElementFacades webList = gamesContainer.thenFindAll(By.xpath(GAMES_WITH_SALE_LOCATOR));
         ArrayList<Game> gameList = new ArrayList<>();
         for (WebElementFacade element:
                 webList) {
