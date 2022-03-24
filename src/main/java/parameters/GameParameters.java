@@ -1,19 +1,14 @@
-package utils;
+package parameters;
 
-public enum TestParam {
-
-    AGE_RANGE ("18"),
+public enum GameParameters {
     ORIG_PRICE ("original_price"),
     FINAL_PRICE ("final_price"),
     SALE ("discount_pct"),
-    NAME ("item_name"),
-    PATH_TO_INSTALLER ("src/downloads/%s"),
-    GAME_GENRE ("action"),
-    SUBMENU ("genre");
+    NAME ("item_name");
 
     private String title;
 
-    TestParam(String title) {
+    GameParameters(String title) {
         this.title = title;
     }
 
