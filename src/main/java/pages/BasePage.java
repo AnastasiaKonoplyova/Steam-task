@@ -3,6 +3,9 @@ package pages;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+import org.openqa.selenium.By;
+import parameters.GenreMenuParam;
+import parameters.MainMenuParam;
 
 public class BasePage extends PageObject {
 
@@ -14,11 +17,27 @@ public class BasePage extends PageObject {
         installLn.click();
     }
 
-    public void openSubMenu(String subMenu){
-        mainMenu.openMenu(subMenu);
+    private void openSubMenu(MainMenuParam subMenu){
+        try {
+            withAction().moveToElement(mainMenu.openMenu(subMenu)).build().perform();
+        } catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
-    public void openGenre(String genre){
-        mainMenu.openGenrePage(genre);
+    private void openGenre(GenreMenuParam genre){
+        try{
+            mainMenu.openGenrePage(genre).find(By.xpath(".//a")).click();
+        }catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void openGenrePage(MainMenuParam subMenu, GenreMenuParam genre){
+        openSubMenu(subMenu);
+        openGenre(genre);
     }
 }
