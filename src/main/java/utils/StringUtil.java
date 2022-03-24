@@ -5,13 +5,14 @@ import java.util.regex.Pattern;
 
 public class StringUtil {
 
-    public static int getIntValue(String textValue){
-        Pattern pattern = Pattern.compile("\\d+");
+    private StringUtil(){}
+    public static String getNumberValue(String textValue){
+        Pattern pattern = Pattern.compile("(\\.\\d+|[0-9]+\\.[0-9]*)|(\\d+)");
         Matcher matcher = pattern.matcher(textValue);
         if(matcher.find()){
-            return Integer.parseInt(matcher.group());
+            return matcher.group();
         }
-        return 0;
+        return "";
     }
 
     public static String getFileNameFromLink(String link){
