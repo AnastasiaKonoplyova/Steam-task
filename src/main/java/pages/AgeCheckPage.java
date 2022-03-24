@@ -6,7 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class AgeCheckPage extends BasePage {
 
-    private final String URL_PART = "agecheck";
+    private final String AGE_CHECK_URL_PART = "agecheck";
     @FindBy(xpath = "//div[@class='agegate_text_container btns']/a[@href='#']")
     WebElementFacade viewPageBtn;
     @FindBy(id = "ageDay")
@@ -17,7 +17,7 @@ public class AgeCheckPage extends BasePage {
     WebElementFacade ageYearSelect;
 
     public boolean isAgeCheckPage(){
-        return getDriver().getCurrentUrl().contains(URL_PART);
+        return getDriver().getCurrentUrl().contains(AGE_CHECK_URL_PART);
     }
 
     public int findBoundaryAgeValue(){

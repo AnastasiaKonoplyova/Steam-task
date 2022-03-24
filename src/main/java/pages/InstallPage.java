@@ -6,10 +6,10 @@ import net.serenitybdd.core.pages.WebElementFacade;
 public class InstallPage extends BasePage {
 
     @FindBy(xpath = "//div[@id='about_greeting']//a[contains(@class,'install_steam')]")
-    WebElementFacade installLn;
+    WebElementFacade downloadLn;
 
     public String getDownloadLink(){
-        return installLn.getAttribute("href");
+        return downloadLn.getAttribute("href");
     }
 
 

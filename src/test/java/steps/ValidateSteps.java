@@ -3,7 +3,7 @@ package steps;
 import net.thucydides.core.annotations.Step;
 import pages.AgeCheckPage;
 import utils.DateUtil;
-import utils.TestParam;
+import parameters.TestParam;
 
 import java.time.LocalDate;
 
@@ -20,7 +20,6 @@ public class ValidateSteps {
         return false;
     }
 
-    @Step("Create valid date to pass the ageCheck")
     private void inputValidDate(){
         LocalDate startDate = LocalDate.of(ageCheckPage.findBoundaryAgeValue(), 1,1);
         LocalDate validDate = DateUtil.generateValidDate(startDate, Long.parseLong(TestParam.AGE_RANGE.getTitle()));

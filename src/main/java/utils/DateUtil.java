@@ -5,6 +5,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class DateUtil {
 
+    private DateUtil(){}
+
     public static LocalDate generateValidDate(LocalDate start, long agePassVal) {
         long startEpochDay = start.toEpochDay();
         long endEpochDay = LocalDate.now().minusYears(agePassVal).toEpochDay();

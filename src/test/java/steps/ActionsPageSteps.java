@@ -3,8 +3,8 @@ package steps;
 import model.Game;
 import net.serenitybdd.core.Serenity;
 import net.thucydides.core.annotations.Step;
-import net.thucydides.core.annotations.Steps;
 import pages.ActionsGamesPage;
+import parameters.TestParam;
 import utils.GameUtil;
 
 import java.util.List;
@@ -13,28 +13,26 @@ public class ActionsPageSteps {
 
     ActionsGamesPage actionsGamesPage;
     List<Game> games;
-    Game testGame;
 
     @Step("Checkout tabs for top sellers")
     public void openTopSellers(){
         actionsGamesPage.openTopSellers();
     }
 
-    public boolean fillGames(){
-        games = actionsGamesPage.getGames();
+    @Step("Find games with sale")
+    public boolean fillGamesWithSale(){
+        games = actionsGamesPage.getGamesWithSale();
         if(games.isEmpty()){
             actionsGamesPage.showMoreGames();
-            return fillGames();
+            return fillGamesWithSale();
         }
         return true;
     }
 
-    public void findGameBySale(){
-        testGame = GameUtil.findGameWithMaxSale(games);
-    }
-
+    @Step("Open game age with max sale")
     public void openGamePage(){
-        Serenity.setSessionVariable("testGame").to(testGame);
+        Game testGame = GameUtil.findGameWithMaxSale(games);
+        Serenity.setSessionVariable(TestParam.TEST_GAME.getTitle()).to(testGame);
         actionsGamesPage.openGamePage(testGame);
     }
 }
